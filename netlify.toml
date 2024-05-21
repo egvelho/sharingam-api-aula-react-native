@@ -6,4 +6,3 @@
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/api/:splat"
-[build] command = "yarn add sharp --ignore-engines && yarn build"
