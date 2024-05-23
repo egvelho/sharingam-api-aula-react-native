@@ -5,7 +5,12 @@ import { authMiddleware } from "./auth.middleware.js";
 export const userRouter = Router();
 
 userRouter.get("/", authMiddleware, async (req, res) => {
-  const users = await prisma.user.findMany();
+  const skip = +req.query.skip || 0;
+  const take = +req.query.take || 10;
+  const users = await prisma.user.findMany({
+    skip,
+    take,
+  });
   res.status(200).json(users);
 });
 
