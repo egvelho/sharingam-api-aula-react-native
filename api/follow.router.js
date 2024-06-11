@@ -4,7 +4,7 @@ import { authMiddleware } from "./auth.middleware.js";
 
 export const followRouter = Router();
 
-followRouter.get("/", authMiddleware, async (req, res) => {
+followRouter.get("/my-followers", authMiddleware, async (req, res) => {
   const follows = await prisma.follows.findMany({
     where: {
       followerId: req.user.id,
@@ -13,6 +13,23 @@ followRouter.get("/", authMiddleware, async (req, res) => {
       following: {
         include: {
           followers: true,
+        },
+      },
+    },
+  });
+
+  res.status(200).json(follows.map(({ following }) => following));
+});
+
+followRouter.get("/my-follows", authMiddleware, async (req, res) => {
+  const follows = await prisma.follows.findMany({
+    where: {
+      followerId: req.user.id,
+    },
+    include: {
+      followers: {
+        include: {
+          following: true,
         },
       },
     },
