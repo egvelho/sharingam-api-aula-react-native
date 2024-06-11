@@ -10,7 +10,6 @@ import { prisma } from "./prisma.js";
 
 export async function authMiddleware(req, res, next) {
   try {
-    return next();
     const payload = jwtService.extractTokenFromHeader(req);
     req.user = await prisma.user.findUnique({
       where: {
