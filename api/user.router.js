@@ -11,7 +11,16 @@ userRouter.get("/", authMiddleware, async (req, res) => {
     skip,
     take,
   });
-  res.status(200).json(users);
+  res
+    .status(200)
+    .json(
+      users.map(({ id, username, name, avatar }) => ({
+        id,
+        username,
+        name,
+        avatar,
+      }))
+    );
 });
 
 userRouter.get("/:username", authMiddleware, async (req, res) => {
