@@ -131,27 +131,24 @@ accountRouter.post("/sign-in", async (req, res) => {
   });
 });
 
-accountRouter.post(
-  "/upload-avatar",
-  [authMiddleware, upload.single("avatar")],
-  async (req, res) => {
-    const avatarBuffer = await sharp(req.file.buffer)
-      .resize({
-        width: 64,
-        height: 64,
-        fit: "cover",
-        position: "center",
-      })
-      .toBuffer();
-    const avatarBase64 = avatarBuffer.toString("base64");
-    const user = await prisma.user.update({
-      data: {
-        avatar: avatarBase64,
-      },
-      where: {
-        id: req.user.id,
-      },
-    });
-    res.status(200).json(user);
-  }
-);
+accountRouter.post("/upload-avatar", [authMiddleware], async (req, res) => {
+  const avatar = req.body.avatar;
+  const avatarBuffer = await sharp(Buffer.from(avatar, "base64"))
+    .resize({
+      width: 64,
+      height: 64,
+      fit: "cover",
+      position: "center",
+    })
+    .toBuffer();
+  const avatarBase64 = avatarBuffer.toString("base64");
+  const user = await prisma.user.update({
+    data: {
+      avatar: avatarBase64,
+    },
+    where: {
+      id: req.user.id,
+    },
+  });
+  res.status(200).json(user);
+});
