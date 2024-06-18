@@ -20,6 +20,7 @@ postRouter.post("/", authMiddleware, async (req, res) => {
   const post = await prisma.post.create({
     data: {
       message: req.body.message,
+      picture: req.body.picture,
       authorId: req.user.id,
     },
   });
