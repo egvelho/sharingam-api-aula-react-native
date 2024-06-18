@@ -137,17 +137,16 @@ accountRouter.post(
   async (req, res) => {
     const avatarBuffer = await sharp(req.file.buffer)
       .resize({
-        width: 256,
-        height: 256,
+        width: 64,
+        height: 64,
         fit: "cover",
         position: "center",
       })
       .toBuffer();
-    await fs.writeFile(`public/${req.user.id}.jpg`, avatarBuffer);
-    const avatarPath = `/${req.user.id}.jpg`;
+    const avatarBase64 = avatarBuffer.toString("base64");
     const user = await prisma.user.update({
       data: {
-        avatar: avatarPath,
+        avatar: avatarBase64,
       },
       where: {
         id: req.user.id,
