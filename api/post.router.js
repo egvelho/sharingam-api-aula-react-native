@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "./auth.middleware.js";
 import { prisma } from "./prisma.js";
+import sharp from "sharp";
 
 export const postRouter = Router();
 
