@@ -30,7 +30,7 @@ postRouter.post("/", authMiddleware, async (req, res) => {
   const pictureBase64 = "data:image/jpg;base64,".concat(
     pictureBuffer.toString("base64")
   );
-  const post = await prisma.post.update({
+  const post = await prisma.post.create({
     data: {
       picture: pictureBase64,
       authorId: req.user.id,
