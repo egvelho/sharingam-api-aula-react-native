@@ -141,7 +141,9 @@ accountRouter.post("/upload-avatar", [authMiddleware], async (req, res) => {
       position: "center",
     })
     .toBuffer();
-  const avatarBase64 = avatarBuffer.toString("base64");
+  const avatarBase64 = "data:image/jpg;base64,".concat(
+    avatarBuffer.toString("base64")
+  );
   const user = await prisma.user.update({
     data: {
       avatar: avatarBase64,

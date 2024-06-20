@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -15,7 +18,23 @@ async function main() {
     data: users,
   });
 
+  const posts = (await prisma.user.findMany()).flatMap((user) =>
+    Array.from({ length: Math.ceil(Math.random() * 50 + 10) }, () => ({
+      authorId: user.id,
+      picture: faker.image.urlPicsumPhotos({
+        width: 128,
+        height: 128,
+        format: "jpg",
+      }),
+    }))
+  );
+
+  await prisma.post.createMany({
+    data: posts,
+  });
+
   console.log(`Inserted ${users.length} users with success!`);
+  console.log(`Inserted ${posts.length} posts with success!`);
 }
 
 main()
