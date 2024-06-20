@@ -11,7 +11,7 @@ userRouter.get("/", authMiddleware, async (req, res) => {
     skip,
     take,
     orderBy: {
-      createdAt: "desc",
+      id: "desc",
     },
   });
   res.status(200).json(
