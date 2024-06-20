@@ -10,17 +10,18 @@ userRouter.get("/", authMiddleware, async (req, res) => {
   const users = await prisma.user.findMany({
     skip,
     take,
+    orderBy: {
+      createdAt: "desc",
+    },
   });
-  res
-    .status(200)
-    .json(
-      users.map(({ id, username, name, avatar }) => ({
-        id,
-        username,
-        name,
-        avatar,
-      }))
-    );
+  res.status(200).json(
+    users.map(({ id, username, name, avatar }) => ({
+      id,
+      username,
+      name,
+      avatar,
+    }))
+  );
 });
 
 userRouter.get("/:username", authMiddleware, async (req, res) => {
