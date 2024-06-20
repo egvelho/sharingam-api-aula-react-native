@@ -10,9 +10,6 @@ userRouter.get("/", authMiddleware, async (req, res) => {
   const users = await prisma.user.findMany({
     skip,
     take,
-    orderBy: {
-      id: "desc",
-    },
   });
   res.status(200).json(
     users.map(({ id, username, name, avatar }) => ({
